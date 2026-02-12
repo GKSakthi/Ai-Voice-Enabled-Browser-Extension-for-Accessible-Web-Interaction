@@ -30,13 +30,17 @@ This extension allows users to control the browser using voice commands. It conv
 - Open YouTube
 - Go to GitHub
 
-- project-folder/
+## Project Structure
+
+```
+project-folder/
 │── manifest.json
 │── background.js
 │── content.js
 │── popup.html
 │── popup.js
 │── style.css
+```
 
 
 ## Future Enhancements
