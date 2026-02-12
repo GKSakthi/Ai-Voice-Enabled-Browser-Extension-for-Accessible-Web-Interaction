@@ -31,7 +31,6 @@ This extension allows users to control the browser using voice commands. It conv
 - Go to GitHub
 
 ## Project Structure
-
 ```
 project-folder/
 │── manifest.json
@@ -42,7 +41,6 @@ project-folder/
 │── style.css
 ```
 
-
 ## Future Enhancements
 - More voice commands
 - Multi-language support
@@ -50,6 +48,3 @@ project-folder/
 
 ## Author
 Sakthivel Raj G
-
-
-## Project Structure
