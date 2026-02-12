@@ -29,6 +29,13 @@ This extension allows users to control the browser using voice commands. It conv
 - Open Google
 - Open YouTube
 - Go to GitHub
+- Search for Artificial Intelligence
+- Search for weather in Chennai
+- Scroll down
+- Scroll up
+- Open new tab
+- Go back
+
 
 ## Project Structure
 ```
