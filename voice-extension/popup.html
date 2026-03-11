@@ -1,9 +1,22 @@
 <!DOCTYPE html>
 <html>
+<head>
+  <meta charset="UTF-8">
+  <title>AI Voice Control</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
 <body>
-  <button id="start">Start Listening</button>
-  <button id="stop">Stop</button>
-  <p>Keep popup open while speaking</p>
+
+  <div class="card">
+    <h2>AI Voice Controller</h2>
+
+    <div class="status">
+      <span id="statusDot" class="dot red"></span>
+      <span id="statusText">Stopped</span>
+    </div>
+
+    <button id="toggleBtn">Start Listening</button>
+  </div>
 
   <script src="popup.js"></script>
 </body>
