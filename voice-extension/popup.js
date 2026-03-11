@@ -1,54 +1,42 @@
-let listening = false;
+const button = document.getElementById("toggleBtn");
+const statusDot = document.getElementById("statusDot");
+const statusText = document.getElementById("statusText");
 
-document.getElementById("start").addEventListener("click", async () => {
-  if (!listening) {
-    listening = true;
-    listenLoop();
-  }
+chrome.storage.local.get("listening", (result) => {
+  updateUI(result.listening);
 });
 
-document.getElementById("stop").addEventListener("click", () => {
-  listening = false;
+button.addEventListener("click", async () => {
+
+  chrome.storage.local.get("listening", async (result) => {
+
+    const newState = !result.listening;
+
+    if (newState) {
+      await fetch("http://127.0.0.1:5000/start");
+      chrome.storage.local.set({ listening: true });
+    } else {
+      await fetch("http://127.0.0.1:5000/stop");
+      chrome.storage.local.set({ listening: false });
+    }
+
+    updateUI(newState);
+  });
+
 });
 
-async function listenLoop() {
-  if (!listening) return;
+function updateUI(isListening) {
 
-  try {
-    const res = await fetch("http://127.0.0.1:5000/listen");
-    const data = await res.json();
-
-    // OPEN WEBSITE
-    if (data.intent === "OPEN") {
-      chrome.tabs.create({
-        url: "https://www." + data.site + ".com"
-      });
-    }
-
-    // SEARCH
-    else if (data.intent === "SEARCH") {
-      chrome.tabs.create({
-        url:
-          "https://www.google.com/search?q=" +
-          encodeURIComponent(data.query)
-      });
-    }
-
-    // PAGE ACTIONS
-    else if (
-      data.intent &&
-      data.intent !== "NO_SPEECH" &&
-      data.intent !== "UNKNOWN"
-    ) {
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        chrome.tabs.sendMessage(tabs[0].id, data);
-      });
-    }
-
-  } catch (e) {
-    console.error(e);
+  if (isListening) {
+    button.textContent = "Stop Listening";
+    statusText.textContent = "Listening";
+    statusDot.classList.remove("red");
+    statusDot.classList.add("green");
+  } else {
+    button.textContent = "Start Listening";
+    statusText.textContent = "Stopped";
+    statusDot.classList.remove("green");
+    statusDot.classList.add("red");
   }
 
-  // listen again
-  setTimeout(listenLoop, 800);
 }
