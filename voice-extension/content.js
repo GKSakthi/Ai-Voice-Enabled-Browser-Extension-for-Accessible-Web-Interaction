@@ -1,6 +1,6 @@
 console.log("Content script active on:", window.location.href);
 
-/* ===================== TEXT TO SPEECH ===================== */
+
 
 function speak(text) {
 
@@ -16,7 +16,7 @@ function speak(text) {
 
 let intervalId = null;
 
-/* ===================== POLLING ===================== */
+
 
 function startPolling() {
 
@@ -55,7 +55,7 @@ function stopPolling() {
 
 }
 
-/* ===================== STORAGE LISTENER ===================== */
+
 
 chrome.storage.local.get("listening", (result) => {
 
@@ -79,26 +79,38 @@ chrome.storage.onChanged.addListener((changes) => {
 
 });
 
-/* ===================== COMMAND EXECUTION ===================== */
+
 
 function executeCommand(text) {
+  /* ---------- STOP READING ---------- */
+
+if (text.includes("stop reading") || text.includes("stop voice")) {
+
+  window.speechSynthesis.cancel();
+
+  console.log("🛑 Speech stopped");
+
+  return;
+}
 
   console.log("Executing:", text);
 
-  /* ---------- READ PAGE ---------- */
 
   if (text.includes("read page")) {
 
-    speak("Reading page content");
+  const content = document.body.innerText.slice(0, 800);
 
-    const content = document.body.innerText.slice(0, 800);
+  speak("Reading page content");
 
+  setTimeout(() => {
     speak(content);
+  }, 1500);
 
-    return;
-  }
+  return;
+}
 
-  /* ---------- SEARCH ---------- */
+
+  
 
   if (text.startsWith("search")) {
 
@@ -117,7 +129,7 @@ function executeCommand(text) {
     return;
   }
 
-  /* ---------- OPEN WEBSITE ---------- */
+  
 
   if (text.startsWith("open")) {
 
@@ -135,7 +147,7 @@ function executeCommand(text) {
     return;
   }
 
-  /* ---------- SCROLL ---------- */
+ 
 
   if (text.includes("scroll down")) {
 
@@ -155,7 +167,7 @@ function executeCommand(text) {
     return;
   }
 
-  /* ---------- TYPE ---------- */
+
 
   if (text.startsWith("type")) {
 
@@ -179,7 +191,7 @@ function executeCommand(text) {
     return;
   }
 
-  /* ---------- CLICK ---------- */
+  
 
   if (text.startsWith("click")) {
 
@@ -220,7 +232,7 @@ function executeCommand(text) {
     return;
   }
 
-  /* ---------- SELECT DROPDOWN ---------- */
+  
 
   if (text.startsWith("select")) {
 
